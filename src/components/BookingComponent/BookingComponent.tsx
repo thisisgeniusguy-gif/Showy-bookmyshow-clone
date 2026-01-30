@@ -7,7 +7,7 @@ function BookingComponent() {
     const location = useLocation();
     const navigate = useNavigate();
     const SEATROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-    const SEATperROW = 10;
+    const SEATperROW = 20;
     const movie = location.state?.movie; // Get movie from router state
 
 
@@ -135,7 +135,7 @@ function BookingComponent() {
                 return (
                     <div key={index} className="seat-wrapper">
                         {/* Add an aisle after the 5th seat (index 5) */}
-                        {index === 5 && <div className="aisle"></div>}
+                        {index% 5 === 0 && index > 0 && <div className="aisle"></div>}
 
                         <div className={`seat ${isBooked ? 'booked' : ''}`}>
                             <input
@@ -167,7 +167,7 @@ function BookingComponent() {
     return (
         <div className="booking-container">
             <Link to="/" className="back-button">← Back to Movies</Link>
-
+                
             <div className="booking-component">
                 <h2>Booking: {movie.title}</h2>
                 <div className="movie-summary">
