@@ -1,0 +1,209 @@
+/* Container Layout */
+.booking-container {
+    padding: 20px;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #fff;
+    background-color: #121212;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.back-button {
+    background: transparent;
+    color: #e50914; /* Cinema Red */
+    border: 1px solid #e50914;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 20px;
+}
+
+.back-button:hover {
+    background: #e50914;
+    color: white;
+}
+
+/* Seat Layout Design */
+.SeatSelectionLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+.SeatSelectionLayout .screen {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.screen {
+    width: 80%;
+    height: 8px;
+    background: #50b7f5;
+    margin: 20px 0 40px 0;
+    border-radius: 50%;
+    box-shadow: 0 10px 20px rgba(80, 183, 245, 0.4);
+    text-align: center;
+    font-size: 12px;
+    color: #50b7f5;
+    text-transform: uppercase;
+}
+
+.seat-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.row-label {
+    width: 30px;
+    font-weight: bold;
+    color: #666;
+}
+
+.seat {
+    margin: 0 5px;
+    position: relative;
+}
+
+.seat input[type="checkbox"] {
+    display: none; /* Hide original checkbox */
+}
+
+.seat label {
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-color: #444;
+    border-radius: 6px 6px 2px 2px;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.seat input[type="checkbox"]:checked + label {
+    background-color: #00ff88;
+    color: #000;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* Modern Modal Styling */
+.popup-content {
+    background: transparent !important;
+    border: none !important;
+    width: auto !important;
+}
+
+.modal {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 24px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    position: relative;
+}
+
+.modal .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal .header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.modal input {
+    background: #333;
+    border: 1px solid #444;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    width: 100px;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.book-now-btn, .confirm {
+    background: linear-gradient(45deg, #e50914, #ff5f6d);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: transform 0.2s;
+}
+
+.book-now-btn:hover, .confirm:hover {
+    transform: scale(1.05);
+}
+
+.seat-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.aisle {
+    width: 30px; /* Space for the walking path */
+}
+
+.aisle-row {
+    display: flex;
+}
+
+/* Standard Seat */
+.seat label {
+    background-color: #444;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover effect only for available seats */
+.seat:not(.booked) label:hover {
+    background-color: #666;
+    transform: scale(1.1);
+}
+
+/* Selected State */
+.seat input:checked + label {
+    background-color: #00ff88 !important; /* Green for selected */
+    color: black;
+}
+
+/* Booked (Greyed Out) State */
+.seat.booked label {
+    background-color: #222 !important; /* Dark grey */
+    color: #555; /* Dimmed text number */
+    cursor: not-allowed;
+    opacity: 0.5;
+    border: 1px solid #333;
+}
+
+/* Optional: Visual "X" for booked seats */
+.seat.booked label::after {
+    content: "✕";
+    position: absolute;
+    font-size: 12px;
+    color: #444;
+}

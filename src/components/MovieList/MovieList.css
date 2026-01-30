@@ -1,0 +1,6 @@
+.movie-component .movie-image img{ 
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}

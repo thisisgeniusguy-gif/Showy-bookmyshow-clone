@@ -1,0 +1,11 @@
+.movie-list .movie-details{
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    gap: 10px;
+
+}
+.movie-list li{
+    background-color: aquamarine;
+    gap: 15px;
+}
