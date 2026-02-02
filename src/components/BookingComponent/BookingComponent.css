@@ -18,6 +18,7 @@
     cursor: pointer;
     transition: 0.3s;
     margin-bottom: 20px;
+    display: inline-block;
 }
 
 .back-button:hover {
@@ -35,6 +36,7 @@
     border-radius: 12px;
     margin: 20px 0;
 }
+
 .SeatSelectionLayout .screen {
     margin-bottom: 10px;
     font-size: 14px;
@@ -58,41 +60,88 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    height: 35px; /* Fixed height to prevent row shifting */
 }
 
 .row-label {
     width: 30px;
     font-weight: bold;
     color: #666;
+    flex-shrink: 0;
 }
 
+.seat-wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.aisle {
+    width: 30px; /* Space for the walking path */
+    flex-shrink: 0;
+}
+
+/* Seat Container - Fixed dimensions prevent layout shifts */
 .seat {
     margin: 0 5px;
     position: relative;
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
 }
 
 .seat input[type="checkbox"] {
     display: none; /* Hide original checkbox */
 }
 
+/* Standard Seat Label */
 .seat label {
-    display: block;
-    width: 25px;
-    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
     background-color: #444;
     border-radius: 6px 6px 2px 2px;
     cursor: pointer;
     font-size: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.2s;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    /* Remove transform to prevent layout shifts */
 }
 
-.seat input[type="checkbox"]:checked + label {
-    background-color: #00ff88;
-    color: #000;
+/* Hover effect only for available seats - uses box-shadow instead of transform */
+.seat:not(.booked) label:hover {
+    background-color: #666;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Selected State */
+.seat.selected label,
+.seat input:checked + label {
+    background-color: #00ff88 !important; /* Green for selected */
+    color: black;
     box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* Booked (Greyed Out) State */
+.seat.booked label {
+    background-color: #222 !important; /* Dark grey */
+    color: #555; /* Dimmed text number */
+    cursor: not-allowed;
+    opacity: 0.5;
+    border: 1px solid #333;
+}
+
+/* Optional: Visual "X" for booked seats */
+.seat.booked label::after {
+    content: "✕";
+    position: absolute;
+    font-size: 12px;
+    color: #444;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* Modern Modal Styling */
@@ -112,6 +161,7 @@
     text-align: center;
     box-shadow: 0 20px 50px rgba(0,0,0,0.8);
     position: relative;
+    min-width: 300px;
 }
 
 .modal .close {
@@ -123,11 +173,20 @@
     color: #888;
     font-size: 24px;
     cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal .close:hover {
+    color: #fff;
 }
 
 .modal .header {
     font-size: 1.5rem;
     font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.modal .content {
     margin-bottom: 20px;
 }
 
@@ -140,10 +199,20 @@
     width: 100px;
     font-size: 1.2rem;
     text-align: center;
-    margin-bottom: 20px;
 }
 
-.book-now-btn, .confirm {
+.modal input:focus {
+    outline: none;
+    border-color: #e50914;
+}
+
+.modal .actions {
+    margin-top: 20px;
+}
+
+.book-now-btn, 
+.confirm,
+.ticket-trigger {
     background: linear-gradient(45deg, #e50914, #ff5f6d);
     color: white;
     border: none;
@@ -153,58 +222,95 @@
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-size: 14px;
 }
 
-.book-now-btn:hover, .confirm:hover {
+.book-now-btn:hover, 
+.confirm:hover,
+.ticket-trigger:hover {
     transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(229, 9, 20, 0.4);
 }
 
-.seat-wrapper {
-    display: flex;
-    align-items: center;
-}
-
-.aisle {
-    width: 30px; /* Space for the walking path */
-}
-
-.aisle-row {
-    display: flex;
-}
-
-/* Standard Seat */
-.seat label {
-    background-color: #444;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-/* Hover effect only for available seats */
-.seat:not(.booked) label:hover {
-    background-color: #666;
-    transform: scale(1.1);
-}
-
-/* Selected State */
-.seat input:checked + label {
-    background-color: #00ff88 !important; /* Green for selected */
-    color: black;
-}
-
-/* Booked (Greyed Out) State */
-.seat.booked label {
-    background-color: #222 !important; /* Dark grey */
-    color: #555; /* Dimmed text number */
+.book-now-btn:disabled {
+    background: linear-gradient(45deg, #666, #888);
     cursor: not-allowed;
     opacity: 0.5;
-    border: 1px solid #333;
 }
 
-/* Optional: Visual "X" for booked seats */
-.seat.booked label::after {
-    content: "✕";
-    position: absolute;
-    font-size: 12px;
-    color: #444;
+.book-now-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Movie Summary Section */
+.booking-component {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.booking-component h2 {
+    color: #e50914;
+    margin-bottom: 10px;
+}
+
+.booking-component h3 {
+    color: #00ff88;
+    margin: 20px 0 10px 0;
+}
+
+.movie-summary {
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.movie-summary p {
+    margin: 0;
+    color: #ccc;
+}
+
+/* Seat Breakdown Display */
+.seat-breakdown {
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.selection-info {
+    margin: 5px 0;
+    color: #ccc;
+}
+
+.selection-info strong {
+    color: #00ff88;
+}
+
+.seat-list {
+    margin-left: 10px;
+    color: #fff;
+}
+
+/* Booking Actions */
+.booking-actions {
+    margin-top: 20px;
+}
+
+.ticket-trigger {
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+/* Error State */
+.error-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.error-state h2 {
+    color: #e50914;
+    margin-bottom: 20px;
 }
